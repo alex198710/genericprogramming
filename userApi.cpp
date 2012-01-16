@@ -1,3 +1,5 @@
+// http://stackoverflow.com/questions/6173226/virtual-forward-iterator
+
 #include <iostream>
 #include <typeinfo>
 #include <vector>
@@ -370,7 +372,98 @@ get(std::vector<int[7]>, indexes()[0][0]);
 
 */
 
+#include <type_info>
+
 /*
+// https://gist.github.com/1069605
+template<class T, void (T::*)() = &T::begin>
+struct traits_method_begin
+{
+};
+*/
+
+template<class T>
+class range
+{
+	public:
+		virtual traits<T>::const_iterator begin() const =0;
+		virtual traits<T>::iterator begin() =0;
+		virtual traits<T>::const_iterator end() const =0;
+		virtual traits<T>::iterator end() =0;
+};
+
+class dimensions
+	: public range<std::list<std::size_t>>
+{
+	public:
+		typedef range<std::list<std::size_t>>::const_iterator const_iterator;
+		typedef range<std::list<std::size_t>>::iterator iterator;
+
+	private:
+		std::list<std::size_t> m_data;
+
+	public:
+		dimensions()
+		{
+		}
+
+		dimensions(const dimensions& p_dimensions)
+		: m_data(p_dimensions.m_data)
+		{
+		}
+
+		dimensions& operator=(const dimensions& p_dimensions)
+		{
+			if(&p_dimensions == this)
+				return *this;
+
+			m_data = p_dimensions.m_data;
+
+			return *this;
+		}
+
+		virtual const_iterator begin() const
+		{
+			return m_data.begin();
+		}
+
+		virtual iterator begin()
+		{
+			return m_data.begin();
+		}
+
+		virtual const_iterator end() const
+		{
+			return m_data.end();
+		}
+
+		virtual iterator end()
+		{
+			return m_data.end();
+		}
+}
+
+template<class T>
+struct traits
+{
+	static_assert(false, "Traits not specialized for your particular use");
+};
+
+template<class T>
+struct traits<T*>
+{
+
+	typedef typename traits_baseType<T>::type baseType;
+	typedef typename T* iterator;
+//	typedef typename const T* const_iterator;
+
+	template<class Range>
+	iterator begin(const T& p_multiArray, const View& p_dimensions);
+//	const_iterator begin(const T& p_multiArray) const;
+	iterator end(const T& p_multiArray);
+//	const_iterator end(const T& p_multiArray);
+};
+
 template<class T>
 get(const T& p_multiArray, const range<std::size_t> p_indexes)
 {
@@ -407,4 +500,73 @@ template<class T>
 get(const range<T>& p_multiArray, const range<std::size_t> p_indexes)
 {
 }
-*/
+
+// -------------------------------------------------------------------
+
+template<class T>
+struct range
+{
+	typedef T valueType;
+	typedef T constIterator;
+	typedef T iterator;
+};
+
+template<class T>
+struct range<std::vector<T>>
+{
+	typedef T valueType;
+	typedef typename std::vector<T>::const_iterator constIterator;
+	typedef typename std::vector<T>::iterator iterator;
+};
+
+template<class T>
+struct traits_baseType
+{
+	typedef T baseType;
+};
+
+template<class T>
+struct traits_baseType<range<T>>
+{
+	typedef typename traits_baseType<range<T>::valueType>::baseType baseType;
+};
+
+template<class T>
+struct traits
+{
+	typedef typename traits_baseType<T>::baseType baseType;
+	typedef typename range<T>::constIterator constIterator;
+	typedef typename range<T>::iterator iterator;
+};
+
+//std::enable_if<...>
+
+template<class Range>
+void begin(const Range& p_range)
+{
+	static_assert(false, "[constIterator begin]: No suitable specialization found");
+}
+
+template<class Range>
+void begin(const Range& p_range)
+{
+	static_assert(false, "[iterator begin]: No suitable specialization found");
+}
+
+template<class Range>
+void end(const Range& p_range)
+{
+	static_assert(false, "[constIterator end]: No suitable specialization found");
+}
+
+template<class Range>
+void end(const Range& p_range)
+{
+	static_assert(false, "[iterator end]: No suitable specialization found");
+}
+
+template<class MultiArray, class View, class Indexes>
+traits<MultiArray>::baseType
+get(const MultiArray& p_multiArray, const View& p_view, const Indexes& p_indexes)
+{
+}

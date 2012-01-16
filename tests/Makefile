@@ -35,19 +35,32 @@ multi_array_traits_depth.o: multi_array_traits_depth.cpp ../multi_array_traits_d
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
 
-multi_array_range.o: multi_array_range.cpp ../multi_array_range.h
+multi_array_dimensions.o: multi_array_dimensions.cpp ../multi_array_dimensions.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
+multi_array_dimensions.out: multi_array_dimensions.o ../multi_array_dimensions.o
+	@$(ECHO) Linking [$@]
+	@$(LD) -o $@ $^ $(LD_FLAGS)
 
-multi_array_stack.o: multi_array_stack.cpp ../multi_array_stack.h
-	@$(ECHO) Compiling [$<]
-	@$(CC) -o $@ -c $< $(CC_FLAGS)
-
-#multi_array_view.o: multi_array_view.cpp ../multi_array_view.h
-#	@$(ECHO) Compiling [$<]
-#	@$(CC) -o $@ -c $< $(CC_FLAGS)
-#multi_array_view.out: multi_array_view.o ../multi_array_view.o ../multi_array_range.o
-#	@$(ECHO) Linking [$@]
-#	@$(LD) -o $@ $^ $(LD_FLAGS)
 multi_array_view.out:
 	@$(ECHO) Compiling [$@] : Disabled
+
+range_traits.o: range_traits.cpp ../include/pps/range/traits.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+range_traitsBaseType.o: range_traitsBaseType.cpp ../include/pps/range/traitsBaseType.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+range_begin.o: range_begin.cpp ../include/pps/range/begin.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+range_end.o: range_end.cpp ../include/pps/range/end.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+range_indexes.o: range_indexes.cpp ../include/pps/range/indexes.h ../include/pps/range/traits.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)

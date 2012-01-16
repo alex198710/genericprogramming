@@ -1,39 +1,35 @@
 #ifndef PPS_MULTI_ARRAY_VIEW_H
 #define PPS_MULTI_ARRAY_VIEW_H
-/*
-#include <vector>
-#include <cstdio>
+
+#include <list>
 #include "multi_array_range.h"
 
 namespace pps {
 namespace multi_array {
 
 class view
+	: public range<range<std::list<std::size_t>>>
 {
+	public:
+		typedef typename range<std::list<std::size_t>>::constIterator constIterator;
+		typedef typename range<std::list<std::size_t>>::iterator iterator;
+
 	private:
-		std::vector<range> m_data;
+		std::list<range<std::list<std::size_t>>> m_data;
 
 	public:
 		view();
 		view(const view& p_view);
 
 		view& operator=(const view& p_view);
+		view& operator[](const range<>& p_range);
 
-		bool operator==(const view& p_view);
-		bool operator!=(const view& p_view);
-
-		std::size_t size() const;
-		const range& at(std::size_t p_index) const;
-		const range& last() const;
-
-		std::vector<range>::const_iterator begin() const;
-		std::vector<range>::const_iterator end() const;
-
-		view& operator[](const range& p_range);
-
-		view parent() const;
+		inline virtual constIterator begin() const;
+		inline virtual iterator begin();
+		inline virtual constIterator end() const;
+		inline virtual iterator end();
 };
 
 }}
-*/
+
 #endif

@@ -1,0 +1,1 @@
+#include "tests.h"#include "../include/pps/range/indexes.h"using pps::range::traits;using pps::range::indexes;int main(){	indexes<2> i1 = indexes<2>()[2][3];	traits<indexes<2>>::iterator it1(begin(i1));	PPS_TESTS_ASSERT(*it1++ == 2);	PPS_TESTS_ASSERT(*it1++ == 3);	PPS_TESTS_ASSERT(it1 == end(i1));	return 0;}
