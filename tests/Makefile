@@ -42,9 +42,6 @@ multi_array_dimensions.out: multi_array_dimensions.o ../multi_array_dimensions.o
 	@$(ECHO) Linking [$@]
 	@$(LD) -o $@ $^ $(LD_FLAGS)
 
-multi_array_view.out:
-	@$(ECHO) Compiling [$@] : Disabled
-
 range_traits.o: range_traits.cpp ../include/pps/range/traits.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
@@ -64,3 +61,15 @@ range_end.o: range_end.cpp ../include/pps/range/end.h
 range_indexes.o: range_indexes.cpp ../include/pps/range/indexes.h ../include/pps/range/traits.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+range_viewSubRange.o: range_viewSubRange.cpp ../include/pps/range/viewSubRange.h ../src/pps/range/viewSubRange.cpp ../include/pps/range/viewSubRangeIterator.h ../src/pps/range/viewSubRangeIterator.cpp
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+range_viewSubRange.out: range_viewSubRange.o ../src/pps/range/viewSubRange.o ../src/pps/range/viewSubRangeIterator.o
+	@$(ECHO) Linking [$@]
+	@$(LD) -o $@ $^ $(LD_FLAGS)
+
+range_view.o: range_view.cpp ../include/pps/range/view.h
+	@$(ECHO) Compiling [$<]
+range_view.out: range_view.o
+	@$(ECHO) Linking [$@]

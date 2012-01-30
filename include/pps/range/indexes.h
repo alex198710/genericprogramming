@@ -10,6 +10,10 @@ namespace range {
 template<int N>
 class indexes
 {
+	public:
+		typedef typename std::list<std::size_t>::const_iterator constIterator;
+		typedef typename std::list<std::size_t>::iterator iterator;
+
 	private:
 		std::list<std::size_t> m_data;
 
@@ -19,10 +23,10 @@ class indexes
 
 		indexes<N>& operator=(const indexes<N>& p_indexes);
 
-		std::list<std::size_t>::const_iterator begin() const;
-		std::list<std::size_t>::iterator begin();
-		std::list<std::size_t>::const_iterator end() const;
-		std::list<std::size_t>::iterator end();
+		constIterator begin() const;
+		iterator begin();
+		constIterator end() const;
+		iterator end();
 
 		indexes<N>& operator[](std::size_t p_index);
 };
@@ -55,25 +59,25 @@ indexes<N>& indexes<N>::operator=(const indexes& p_indexes)
 }
 
 template<int N>
-std::list<std::size_t>::const_iterator indexes<N>::begin() const
+typename indexes<N>::constIterator indexes<N>::begin() const
 {
 	return m_data.begin();
 }
 
 template<int N>
-std::list<std::size_t>::iterator indexes<N>::begin()
+typename indexes<N>::iterator indexes<N>::begin()
 {
 	return m_data.begin();
 }
 
 template<int N>
-std::list<std::size_t>::const_iterator indexes<N>::end() const
+typename indexes<N>::constIterator indexes<N>::end() const
 {
 	return m_data.end();
 }
 
 template<int N>
-std::list<std::size_t>::iterator indexes<N>::end()
+typename indexes<N>::iterator indexes<N>::end()
 {
 	return m_data.end();
 }

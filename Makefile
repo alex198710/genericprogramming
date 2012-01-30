@@ -1,6 +1,5 @@
 include Makefile.inc
 
-EXEC = multiArray.out
 LIB = libMultiArray.so
 
 all: tests
@@ -10,12 +9,11 @@ tests: forceLook
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f *.o
+	@$(RM) -Rf src/*.o
 	@$(CD) tests ; $(MAKE) clean
 
 distclean: clean
 	@$(ECHO) Dist cleaning project
-	@$(RM) -f $(EXEC)
 	@$(RM) -f $(LIB)
 	@$(CD) tests ; $(MAKE) distclean
 
