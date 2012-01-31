@@ -73,3 +73,11 @@ range_view.o: range_view.cpp ../include/pps/range/view.h
 	@$(ECHO) Compiling [$<]
 range_view.out: range_view.o
 	@$(ECHO) Linking [$@]
+
+test_usage.o: test_usage.cpp ../include/pps/range/traits.h ../include/pps/range/begin.h ../include/pps/range/end.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+test_extend.o: test_extend.cpp ../include/pps/range/traits.h ../include/pps/range/begin.h ../include/pps/range/end.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
