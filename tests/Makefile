@@ -58,9 +58,17 @@ range_end.o: range_end.cpp ../include/pps/range/end.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
 
-range_indexes.o: range_indexes.cpp ../include/pps/range/indexes.h ../include/pps/range/traits.h
+range_indexes.o: range_indexes.cpp ../include/pps/range/indexes.h ../src/pps/range/indexes.cpp ../include/pps/range/traits.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
+range_indexes.out: range_indexes.o ../src/pps/range/indexes.o
+	@$(ECHO) Linking [$@]
+	@$(LD) -o $@ $^ $(LD_FLAGS)
+
+range_get.o: range_get.cpp ../include/pps/range/get.h ../include/pps/range/indexes.h ../src/pps/range/indexes.cpp
+	@$(ECHO) Compiling [$<]
+range_get.out: range_get.o ../src/pps/range/indexes.o
+	@$(ECHO) Linking [$@]
 
 range_viewSubRange.o: range_viewSubRange.cpp ../include/pps/range/viewSubRange.h ../src/pps/range/viewSubRange.cpp ../include/pps/range/viewSubRangeIterator.h ../src/pps/range/viewSubRangeIterator.cpp
 	@$(ECHO) Compiling [$<]
@@ -79,5 +87,9 @@ test_usage.o: test_usage.cpp ../include/pps/range/traits.h ../include/pps/range/
 	@$(CC) -o $@ -c $< $(CC_FLAGS)
 
 test_extend.o: test_extend.cpp ../include/pps/range/traits.h ../include/pps/range/begin.h ../include/pps/range/end.h
+	@$(ECHO) Compiling [$<]
+	@$(CC) -o $@ -c $< $(CC_FLAGS)
+
+test_manip.o: test_manip.cpp ../include/pps/range/traits.h ../include/pps/range/traitsBaseType.h ../include/pps/range/begin.h ../include/pps/range/end.h
 	@$(ECHO) Compiling [$<]
 	@$(CC) -o $@ -c $< $(CC_FLAGS)

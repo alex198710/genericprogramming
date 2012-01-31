@@ -7,7 +7,6 @@
 namespace pps {
 namespace range {
 
-template<int N>
 class indexes
 {
 	public:
@@ -19,110 +18,43 @@ class indexes
 
 	public:
 		indexes();
-		indexes(const indexes<N>& p_indexes);
+		indexes(const indexes& p_indexes);
 
-		indexes<N>& operator=(const indexes<N>& p_indexes);
+		template<class InputIterator>
+		indexes(InputIterator p_first, InputIterator p_last);
+
+		indexes& operator=(const indexes& p_indexes);
 
 		constIterator begin() const;
 		iterator begin();
 		constIterator end() const;
 		iterator end();
 
-		indexes<N>& operator[](std::size_t p_index);
+		indexes& operator[](std::size_t p_index);
 };
+
+// ---- Extending library to support indexes as a range
+
+template<>
+struct traits<indexes>
+	: traits<std::list<std::size_t>>
+{
+};
+
+typename traits<indexes>::constIterator begin(const indexes& p_range);
+typename traits<indexes>::iterator begin(indexes& p_range);
+typename traits<indexes>::constIterator end(const indexes& p_range);
+typename traits<indexes>::iterator end(indexes& p_range);
 
 }}
 
 namespace pps {
 namespace range {
 
-template<int N>
-indexes<N>::indexes()
+template<class InputIterator>
+indexes::indexes(InputIterator p_first, InputIterator p_last)
+: m_data(p_first, p_last)
 {
-}
-
-template<int N>
-indexes<N>::indexes(const indexes& p_indexes)
-: m_data(p_indexes.m_data)
-{
-}
-
-template<int N>
-indexes<N>& indexes<N>::operator=(const indexes& p_indexes)
-{
-	if(&p_indexes == this)
-		return *this;
-
-	m_data = p_indexes.m_data;
-
-	return *this;
-}
-
-template<int N>
-typename indexes<N>::constIterator indexes<N>::begin() const
-{
-	return m_data.begin();
-}
-
-template<int N>
-typename indexes<N>::iterator indexes<N>::begin()
-{
-	return m_data.begin();
-}
-
-template<int N>
-typename indexes<N>::constIterator indexes<N>::end() const
-{
-	return m_data.end();
-}
-
-template<int N>
-typename indexes<N>::iterator indexes<N>::end()
-{
-	return m_data.end();
-}
-
-template<int N>
-indexes<N>& indexes<N>::operator[](std::size_t p_index)
-{
-	m_data.push_back(p_index);
-	return *this;
-}
-
-// ---- Extending library to support indexes as a range
-
-template<int N>
-struct traits<indexes<N>>
-	: traits<std::list<std::size_t>>
-{
-};
-
-template<int N>
-typename traits<std::list<std::size_t>>::constIterator
-begin(const indexes<N>& p_range)
-{
-	return p_range.begin();
-}
-
-template<int N>
-typename traits<std::list<std::size_t>>::iterator
-begin(indexes<N>& p_range)
-{
-	return p_range.begin();
-}
-
-template<int N>
-typename traits<std::list<std::size_t>>::constIterator
-end(const indexes<N>& p_range)
-{
-	return p_range.end();
-}
-
-template<int N>
-typename traits<std::list<std::size_t>>::iterator
-end(indexes<N>& p_range)
-{
-	return p_range.end();
 }
 
 }}

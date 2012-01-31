@@ -65,6 +65,15 @@ class MyFakeContainer
 namespace pps {
 namespace range {
 
+/*
+	Can be written in a more simple way since it is a simple
+	composition of a std::list :
+		template<>
+		struct traits<MyFakeContainer>
+			: traits<std::list<std::string>>
+		{
+		};
+*/
 template<>
 struct traits<MyFakeContainer>
 {
