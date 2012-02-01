@@ -1,6 +1,6 @@
-CC = /c/MinGW/bin/g++
+CC = g++
 CC_FLAGS = -ansi -pedantic -W -Wall -std=c++0x -O3
-LD = /c/MinGW/bin/g++
+LD = g++
 LD_FLAGS = -fPIC
 ECHO = echo
 CD = cd
